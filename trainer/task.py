@@ -85,13 +85,13 @@ def main():
                 b = tf.get_variable(
                     "b", [1], initializer=tf.random_normal_initializer())
                 loss = tf.reduce_sum(tf.square(Y_placeholder - X_placeholder * w - b))
-                global_step = tf.contrib.framework.get_or_create_global_step()
+                global_step = tf.train.get_or_create_global_step()
                 train_op = optimizer.minimize(loss, global_step=global_step)
 
             config = tf.ConfigProto(
                 allow_soft_placement=True,
                 log_device_placement=False,
-                device_filters=["/job:ps", "/job:worker/task:%d" % FLAGS.task_index]
+                device_filters=["/job:ps", "/job:worker/task:%d" % task_index]
             )
 
             # hooks=[tf.train.StopAtStepHook(last_step=100)]
